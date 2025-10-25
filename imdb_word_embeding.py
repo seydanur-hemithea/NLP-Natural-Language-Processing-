@@ -67,5 +67,37 @@ plt.title("Word2Vec")
 
 
 
+# FastText model
+fasttext_model = FastText(sentences=tokenized_doc, vector_size=50, window=5, min_count=1, sg=0)
+fasttext_vectors = fasttext_model.wv
+
+
+fasttext_words = list(fasttext_vectors.index_to_key[:500])
+fasttext_vecs = [fasttext_vectors[word] for word in fasttext_words]
+
+
+fasttext_kmeans = KMeans(n_clusters=2)
+fasttext_kmeans.fit(fasttext_vecs)
+fasttext_clusters = fasttext_kmeans.labels_
+
+
+fasttext_pca = PCA(n_components=2)
+fasttext_reduced = fasttext_pca.fit_transform(fasttext_vecs)
+fasttext_centers = fasttext_pca.transform(fasttext_kmeans.cluster_centers_)
+
+
+plt.figure()
+plt.scatter(fasttext_reduced[:,0], fasttext_reduced[:,1], c=fasttext_clusters, cmap="plasma")
+plt.scatter(fasttext_centers[:,0], fasttext_centers[:,1], c="blue", marker="x", s=150, label="center")
+plt.legend()
+
+for i, word in enumerate(fasttext_words):
+    plt.text(fasttext_reduced[i,0], fasttext_reduced[i,1], word, fontsize=7)
+
+plt.title("FastText")
+
+
+
+
 
 
