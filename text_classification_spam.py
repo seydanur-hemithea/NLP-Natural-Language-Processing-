@@ -66,6 +66,12 @@ c_matrix=confusion_matrix(y_test, prediction)
 accuracy=100*sum(sum((c_matrix))-c_matrix[1,0]-c_matrix[0,1])/sum(sum(c_matrix))
 
 print(accuracy)
+"""
+true_positive = c_matrix[0,0]
+true_negative = c_matrix[1,1]
+total = c_matrix.sum()
+accuracy = 100 * (true_positive + true_negative) / total
+print(f"Accuracy: {accuracy:.2f}%")"""
 
 
 
